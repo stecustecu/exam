@@ -49,7 +49,6 @@
       border-radius: 4px;
       text-align: right;
       display: flex;
-      flex-col: column;
       line-height: 1.2;
     }
   
@@ -80,60 +79,64 @@
 <body class="bg-gradient-to-br from-blue-800 to-gray-900 text-white min-h-screen">
 
   <!-- Overlay loading (jika diperlukan) -->
-  <div id="bg">Loading...</div>
+  <!--<div id="bg">Loading...</div>-->
 
   <!-- Main content -->
-  <div id="main-content">
-    <div class="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg text-center">
-      <!-- Bagian Form URL -->
-      <h1 class="text-3xl font-bold mb-4">Exam</h1>
-      <form id="askurl" class="mt-4">
-        <label for="url" class="block text-lg font-semibold mb-2">Insert Exam URL</label>
-        <div class="relative flex items-stretch">
-          <input type="text" id="url" class="flex-1 p-3 border rounded-l bg-gray-700 focus:outline-none focus:shadow-outline-blue" placeholder="URL CBT">
-          <button type="button" id="submit" class="bg-blue-500 text-white px-6 py-3 rounded-r hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800 transition duration-300 ease-in-out">
-            Run
-          </button>
-        </div>
-      </form>
-      <div id="content"></div>
-    </div>
+  <div class="w-full max-w-md mx-auto p-6 rounded-lg shadow-lg text-center">
+    <!-- Bagian Form URL -->
+    <h1 class="text-3xl font-bold mb-4">Exam</h1>
+    <form id="askurl" class="mt-4">
+      <label for="url" class="block text-lg font-semibold mb-2">Insert Exam URL</label>
+      <div class="relative flex items-stretch gap-2">
+        <input type="text" id="url" class="flex-1 p-3 border rounded bg-gray-700 focus:outline-none focus:shadow-outline-blue" placeholder="URL CBT">
+        <button type="button" id="submit" class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800 transition duration-300 ease-in-out">
+          Run
+        </button>
+        <button type="button" id="fullscreen" class="bg-gray-600 text-white p-3 rounded hover:bg-gray-700 focus:outline-none transition duration-300 ease-in-out flex items-center">
+          <span class="material-icons text-lg">fullscreen</span>
+        </button>
+      </div>
+    </form>
+    <div id="content"></div>
+  </div>
 
     <!-- Container untuk iframe -->
     <div id="iframe-container" style="min-height: 80vh;"></div>
   </div>
 
-  <footer class="px-3 py-2 gap-1">
-    <div class="flex gap-1">
-      <button class="px-2 py-2 border border-red-500 text-red-500 text-[10px] rounded">
-        Logout
+  <footer class="px-3 py-2 flex flex-row items-center justify-between">
+    <div class="flex gap-2">
+      <button class="min-w-[4.5rem] px-3 py-2 border border-red-500 text-red-500 text-[10px] rounded">
+        Exit
       </button>
-      <button class="w-9 h-9 flex items-center justify-center bg-white text-black rounded">
-        <span class="material-icons text-base">home</span>
-      </button>
-      <button class="w-9 h-9 flex items-center justify-center bg-white text-black rounded">
-        <span class="material-icons text-base">arrow_back</span>
-      </button>
-      <button class="w-9 h-9 flex items-center justify-center bg-white text-black rounded">
-        <span class="material-icons text-base">refresh</span>
-      </button>
-      <button class="w-9 h-9 flex items-center justify-center bg-white text-black rounded">
-        <span class="material-icons text-base">arrow_forward</span>
-      </button>
+      <div class="flex gap-2">
+        <button class="w-9 h-9 flex items-center justify-center bg-[#c2c2c2] text-black rounded">
+          <span class="material-icons text-base">home</span>
+        </button>
+        <button class="w-9 h-9 flex items-center justify-center bg-[#c2c2c2] text-black rounded">
+          <span class="material-icons text-base">arrow_back</span>
+        </button>
+        <button class="w-9 h-9 flex items-center justify-center bg-[#c2c2c2] text-black rounded">
+          <span class="material-icons text-base">refresh</span>
+        </button>
+        <button class="w-9 h-9 flex items-center justify-center bg-[#c2c2c2] text-black rounded">
+          <span class="material-icons text-base">arrow_forward</span>
+        </button>
+      </div>
     </div>
 
-    <div class="border border-white w-[9rem] rounded">
-      <div class="flex items-center justify-center p-1">
-        <span class="material-icons text-xs">wifi</span>
-        <span id="clock" class="text-[10px]">20.58</span>
+    <div class="border border-white w-[5rem] rounded mr-2">
+      <div class="flex items-center justify-center p-1 gap-1">
+        <span class="material-icons text-base">signal_cellular_alt</span>
+        <span id="clock" class="text-[10px]">1.630 AM</span>
       </div>
-      <hr>
-      <div class="flex items-center justify-center p-1">
-        <span class="material-icons text-xs">battery_full</span>
-        <span id="battery" class="text-xs">20%</span>
+      <hr class="mx-1">
+      <div class="flex items-center justify-center p-1 gap-1">
+        <span class="material-icons text-sm">battery_full</span>
+        <span id="battery" class="text-xs">83%</span>
       </div>
     </div>
-  </footer>
+</footer>
   
   <!-- Script untuk sweetalert (jika digunakan) dan index.js -->
   <script src="js/sweetalert.js"></script>
@@ -164,6 +167,25 @@
 
       // Listen for battery level changes
       battery.addEventListener("levelchange", updateBatteryLevel);
+    });
+  </script>
+
+  <script>
+    // Mendapatkan tombol fullscreen berdasarkan id
+    const fsBtn = document.getElementById('fullscreen');
+    
+    // Menambahkan event listener untuk menangani klik pada tombol fullscreen
+    fsBtn.addEventListener('click', () => {
+      // Cek apakah tidak ada elemen yang sedang dalam mode layar penuh
+      if (!document.fullscreenElement) {
+        // Meminta mode fullscreen untuk elemen root dokumen, bisa disesuaikan misalnya dengan container tertentu
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`Error mengaktifkan mode fullscreen: ${err.message}`);
+        });
+      } else {
+        // Jika sudah berada di mode fullscreen, keluar dari mode fullscreen
+        document.exitFullscreen();
+      }
     });
   </script>
   
