@@ -238,5 +238,32 @@
       }
     }
   </script>
+
+  <script>
+  // Pastikan browser mendukung API ini
+  if (screen.orientation && screen.orientation.lock) {
+    // Fungsi untuk mencoba mengunci orientasi ke mode potrait
+    function lockOrientation() {
+      screen.orientation.lock('portrait').then(function() {
+        console.log('Orientasi terkunci pada mode potrait.');
+      }).catch(function(error) {
+        console.log('Gagal mengunci orientasi: ', error);
+      });
+    }
+
+    // Contoh: panggil fungsi ini ketika user mengaktifkan mode fullscreen
+    document.addEventListener('click', function() {
+      // Misal, minta fullscreen terlebih dahulu
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(lockOrientation);
+      } else {
+        lockOrientation();
+      }
+    });
+  } else {
+    console.log('Screen Orientation API tidak didukung oleh browser ini.');
+  }
+</script>
+  
 </body>
 </html>
